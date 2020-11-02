@@ -127,10 +127,17 @@
             text
             :disabled="!valid"
             v-if="data != null"
+            @click="editData()"
           >
             Edit Product
           </v-btn>
-          <v-btn color="blue darken-1" text :disabled="!valid" v-else>
+          <v-btn
+            color="blue darken-1"
+            text
+            :disabled="!valid"
+            v-else
+            @click="addData()"
+          >
             Add New Product
           </v-btn>
         </v-card-actions>
@@ -141,7 +148,7 @@
 
 <script>
 export default {
-  props: ["dialog", "data"],
+  props: ["dialog", "data", "id"],
   data: () => ({
     valid: true,
     date: ["", ""],
@@ -163,6 +170,23 @@ export default {
       this.dialog = false;
       this.update = 0;
       this.$emit("close");
+    },
+    editData() {
+      // console.log('edit')
+      this.product.buyDate = this.date[0];
+      this.product.expired = this.date[1];
+      const payload = {
+        data: this.product,
+        id: this.id
+      };
+      this.$store.commit("putProduct", payload);
+      this.closeDialog();
+    },
+    addData() {
+      this.product.buyDate = this.date[0];
+      this.product.expired = this.date[1];
+      this.$store.commit("addProduct", this.product);
+      this.closeDialog();
     }
   },
   updated() {

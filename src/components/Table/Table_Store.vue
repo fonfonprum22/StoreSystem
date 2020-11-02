@@ -24,13 +24,14 @@
         <New
           :dialog="dialogNew"
           :data="editedItemModel"
-          v-on:close="
-            () => {
-              dialogNew = false;
-            }
-          "
+          :id="editedIndex"
+          v-on:close="closeDialog()"
         />
-        <Delete :dialog="dialogDelete" />
+        <Delete
+          :dialog="dialogDelete"
+          :id="editedIndex"
+          v-on:delete="closeDialog()"
+        />
       </v-toolbar>
     </template>
     <template v-slot:item.type="{ item }">
@@ -86,7 +87,8 @@ export default {
       buyDate: "",
       expired: "",
       unit: ""
-    }
+    },
+    editedIndex: 0
   }),
   components: {
     New,
@@ -104,26 +106,9 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
-        {
-          productName: "Potato",
-          type: "Snack",
-          price: 5,
-          sellingPrice: 8,
-          buyDate: "2020-01-01",
-          expired: "2020-12-30",
-          unit: 10
-        },
-        {
-          productName: "Momo",
-          type: "Drink",
-          price: 100,
-          sellingPrice: 8,
-          buyDate: "2021-01-01",
-          expired: "2021-12-30",
-          unit: 10
-        }
-      ];
+      this.desserts = this.$store.state.products;
+      console.log("initialize");
+      this.$forceUpdate();
     },
     getTypeColor(type) {
       if (type == "Snack") return "pink";
@@ -171,6 +156,12 @@ export default {
         this.desserts.push(this.editedItemModel);
       }
       this.close();
+    },
+
+    closeDialog() {
+      this.dialogNew = false;
+      this.dialogDelete = false;
+      this.initialize();
     }
   }
 };
