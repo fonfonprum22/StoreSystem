@@ -1,42 +1,67 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import firebase from 'firebase'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    owner: "",
+    config_status: false,
     products: []
   },
   mutations: {
-    putProduct(state, payload) {
-      const pd = {
-        productName:
-          payload.data.productName != null ? payload.data.productName : "",
-        type: payload.data.type != null ? payload.data.type : "",
-        price: payload.data.price != null ? payload.data.price : 0,
-        sellingPrice:
-          payload.data.sellingPrice != null ? payload.data.sellingPrice : 0,
-        buyDate: payload.data.buyDate != null ? payload.data.buyDate : "",
-        expired: payload.data.expired != null ? payload.data.expired : "",
-        unit: payload.data.unit != null ? payload.data.unit : ""
-      };
-      state.products[payload.id] = pd;
+    get_collection_products(state, payload) {
+      state.products.push(payload)
     },
-    addProduct(state, payload) {
-      console.log(payload);
-      const pd = {
-        productName: payload.productName != null ? payload.productName : "",
-        type: payload.type != null ? payload.type : "",
-        price: payload.price != null ? payload.price : 0,
-        sellingPrice: payload.sellingPrice != null ? payload.sellingPrice : 0,
-        buyDate: payload.buyDate != null ? payload.buyDate : "",
-        expired: payload.expired != null ? payload.expired : "",
-        unit: payload.unit != null ? payload.unit : ""
-      };
-      state.products.push(pd);
+    reset_products(state) {
+      state.products = []
     }
   },
-  actions: {},
-  modules: {}
-});
+  actions: {
+    config_firebase({dispatch}) {
+      const config = {
+        apiKey: "AIzaSyA5wWfyOMgGnU56vmccj0_NfPPSYijyZ_Y",
+        authDomain: "newstore-d8ef2.firebaseapp.com",
+        databaseURL: "https://newstore-d8ef2.firebaseio.com",
+        projectId: "newstore-d8ef2",
+        storageBucket: "newstore-d8ef2.appspot.com",
+        messagingSenderId: "582816019955",
+        appId: "1:582816019955:web:d3e667d05f90fef4ca0e86",
+        measurementId: "G-L9GLCTQ5XP"
+      }
+      firebase.initializeApp(config);
+      firebase.analytics()
+      dispatch('get_collection_products')
+    },
+    post_data_to_collection_products({dispatch}, payload) {
+      firebase.firestore().collection('products').add(payload)
+        .catch((err) => {
+          console.log(err)
+        })
+        dispatch('get_collection_products')
+    },
+    async get_collection_products({ commit }) {
+      commit('reset_products')
+      const cityRef = firebase.firestore().collection('products')
+      const snapshot = await cityRef.get();
+      snapshot.forEach(doc => {
+        const data = {
+          id : doc.id,
+          data : doc.data()
+        }
+        commit('get_collection_products', data)
+      });
+    },
+    async put_data_in_collection_products({dispatch}, payload) {
+      const cityRef = firebase.firestore().collection('products')
+      await cityRef.doc(payload.id).set(payload.data)
+      dispatch('get_collection_products')
+    },
+    async delete_data_collection_product({dispatch}, payload) {
+      firebase.firestore().collection('products').doc(payload).delete()
+      dispatch('get_collection_products')
+    }
+  },
+  modules: {
+  }
+})

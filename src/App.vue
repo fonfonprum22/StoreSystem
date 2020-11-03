@@ -1,16 +1,11 @@
 <template>
   <v-app id="inspire">
-    <Appbar />
+    <App_bar />
     <v-main class="grey lighten-3">
       <v-container>
         <v-row>
-          <v-col cols="3">
-            <Navigation />
-          </v-col>
           <v-col>
-            <v-sheet min-height="70vh" rounded="lg">
-              <router-view />
-            </v-sheet>
+            <router-view />
           </v-col>
         </v-row>
       </v-container>
@@ -19,15 +14,10 @@
 </template>
 
 <script>
-import Appbar from "./components/Appbar";
-import Navigation from "./components/Navigationbar";
+import App_bar from "./components/ui_main/Appbar";
 export default {
   components: {
-    Appbar,
-    Navigation
+    App_bar,
   },
-  created() {
-    this.$router.push({ path: "Dashboard" });
-  }
 };
 </script>
