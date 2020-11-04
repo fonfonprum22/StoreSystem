@@ -47,7 +47,7 @@ export default {
         if (element.data.actions == "Buy") {
           this.buy = this.buy + element.data.money;
         } else if (element.data.actions == "Sale") {
-          this.sale = this.sale + element.data.money;
+          this.sale = Number(this.sale) + Number(element.data.money);
         }
       });
       this.lucre = this.sale - this.buy;
@@ -63,7 +63,7 @@ export default {
         if (element.data.actions == "Buy") {
           this.unit_buy = this.unit_buy + element.data.unit;
         } else if (element.data.actions == "Sale") {
-          this.unit_sale = this.unit_sale + element.data.unit;
+          this.unit_sale = Number(this.unit_sale) + Number(element.data.unit);
         }
       });
   }

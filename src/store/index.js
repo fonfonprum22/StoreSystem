@@ -149,7 +149,7 @@ export default new Vuex.Store({
         actions: 'Sale',
         nameProduct: payload.data.name,
         money: payload.price,
-        unit: payload.data.instorck,
+        unit: payload.unit,
         date: today,
         productType: payload.data.type
       }

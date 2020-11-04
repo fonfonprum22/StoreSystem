@@ -110,6 +110,7 @@ export default {
         const payload = {
           id: elememt.id,
           price: elememt.price,
+          unit: elememt.unit,
           data: {
             buy: elememt.data.buy,
             buyDate: elememt.data.buyDate,
