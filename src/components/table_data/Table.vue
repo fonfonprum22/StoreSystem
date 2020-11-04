@@ -24,7 +24,6 @@
         <v-btn 
           class="ml-3"
           rounded
-          color="primary"
           @click="add_new_item()"
         >
           {{ ittle_add }}

@@ -41,7 +41,7 @@
       </v-row>
       <v-row>
         <v-col class="text-start pt-0">
-          ยอดรวมสุทธิ (totle)
+          ยอดรวมสุทธิ (Totle)
         </v-col>
         <v-col class="text-end pt-0">
           {{ totle }} Baht

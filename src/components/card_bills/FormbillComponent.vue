@@ -46,7 +46,9 @@ export default {
             name : '',
             unit: 0,
             price: 0,
-            index: ''
+            index: '',
+            id: '',
+            data: {}
         },
         unit: 0
     }),
@@ -62,6 +64,8 @@ export default {
         update_price_unit() {
             this.products.forEach(element => {
                 if( element.data.name == this.form.name) {
+                    this.form.id = element.id
+                    this.form.data = element.data
                     this.form.price = this.form.unit * element.data.price
                 }
             });

@@ -123,7 +123,7 @@
       </v-card-text>
       <v-card-actions class="d-flex flex-row-reverse pa-5">
         <v-btn class="ml-3" @click="close_dialog()">close</v-btn>
-        <v-btn :disabled="!valid" @click="edit_dialog()">Save product</v-btn>
+        <v-btn :disabled="!valid" @click="edit_dialog(product)">Save product</v-btn>
       </v-card-actions>
     </v-card>
   </v-form>
@@ -141,10 +141,23 @@ export default {
       this.$refs.form.reset();
       this.$emit("close");
     },
-    edit_dialog() {
-      this.$store.dispatch('put_data_in_collection_products', this.product)
-      this.close_dialog() 
-    }
+    edit_dialog(object) {
+      const payload = {
+        id: object.id,
+        data: {
+          buy: object.data.instorck * object.data.price,
+          buyDate: object.data.buyDate,
+          expire: object.data.expire,
+          instorck: object.data.instorck,
+          name: object.data.name,
+          price: object.data.price,
+          purchasePrice: object.data.purchasePrice,
+          type: object.data.type,
+        },
+      };
+      this.$store.dispatch("put_data_in_collection_products", payload);
+      this.close_dialog();
+    },
   },
   updated() {
     if (this.dates[0] != "" && this.dates[0] != null) {

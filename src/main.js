@@ -15,5 +15,8 @@ new Vue({
   render: h => h(App),
   created() {
     store.dispatch('config_firebase')
+    store.dispatch('get_collection_products')
+    store.dispatch('get_collection_logs')
+    store.dispatch('get_collection_employees')
   },
 }).$mount('#app')

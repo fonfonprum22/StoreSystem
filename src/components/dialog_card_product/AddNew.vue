@@ -130,6 +130,7 @@
         <v-btn :disabled="!valid" @click="add_new_product()">Add new product</v-btn>
       </v-card-actions>
     </v-card>
+    {{product.installAt}}
   </v-form>
 </template>
 
@@ -143,10 +144,11 @@ export default {
             name : '',
             buyDate : '',
             expire : '',
-            purchasePrice : '', 
-            price : '',
-            instorck : '',
-            type : '' 
+            purchasePrice : 0, 
+            price : 0,
+            instorck : 0,
+            type : '',
+            buy : 0
         }
   }),
   methods : {
@@ -155,6 +157,7 @@ export default {
       if (this.valid) {
         this.product.buyDate = this.dates[0]
         this.product.expire = this.dates[1]
+        this.product.buy = this.product.instorck * this.product.purchasePrice
         this.$store.dispatch('post_data_to_collection_products', this.product)
         this.close_dialog()
       }
@@ -162,7 +165,7 @@ export default {
     close_dialog(){
       this.$refs.form.reset()
       this.$emit('close')
-    }
+    },
   },
 };
 </script>

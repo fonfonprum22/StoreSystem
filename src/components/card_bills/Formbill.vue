@@ -42,7 +42,9 @@ export default {
     initialize_products() {
       this.products = this.$store.state.products;
       this.$store.state.products.forEach(element => {
-        this.product_name.push(element.data.name);
+        if ( element.data.instorck > 0 ) {
+          this.product_name.push(element.data.name);
+        } 
       });
     },
     send_product_to_list(payload) {
